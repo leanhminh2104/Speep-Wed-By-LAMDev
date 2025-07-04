@@ -1,6 +1,6 @@
 // ==UserScript==
 // @author       xGreen
-// @require      https://raw.githubusercontent.com/phantatdung233/bypass-yeumoney/refs/heads/main/bypass_yeumoney.js
+// @require      https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev.js
 // @name         Speep Wed By LAMDev
 // @namespace    http://tampermonkey.net/
 // @version      2.3
