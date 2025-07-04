@@ -52,6 +52,29 @@ Speep Wed – Công cụ tuyệt vời cho người sống vội!
 
 ---
 
+---
+
 ## ❤️ Ủng hộ
 
 Nếu bạn thấy tiện ích này hữu ích, hãy để lại ⭐ trên Github hoặc mời mình một ly cà phê!
+
+<table>
+  <tr>
+    <td>
+      <b>Ngân hàng MB Bank</b><br>
+      <b>Số tài khoản:</b><br>
+      <code id="stk-mb">2104200637</code><br>
+      <button onclick="navigator.clipboard.writeText('2104200637')">📋 Sao chép STK</button><br><br>
+      <b>Chủ tài khoản:</b><br>
+      <code>LÊ VĂN ANH MINH</code>
+    </td>
+    <td>
+      <img src="https://img.vietqr.io/image/MB-2104200637-qr_only.png" alt="QR MB Bank" width="160" />
+    </td>
+  </tr>
+</table>
+
+---
+
+<b>Hoặc quét QR bên cạnh để chuyển khoản nhanh chóng!</b>
+
