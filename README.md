@@ -29,9 +29,9 @@ Bấm vào đây sau khi cài Tampermonkey để tự động cài đặt script
 ---
 
 > [!WARNING]
-**Lưu ý:**
-- Gặp lỗi, vui lòng [**comment trong nhóm Zalo**](https://zalo.me/g/boiqoq426) hoặc [**liên hệ livechat**](https://support.dichvusale.io.vn) để được hỗ trợ fix nhanh nhất.
-- **Bắt buộc ghi Credit** nếu bạn chia sẻ hoặc chỉnh sửa lại code.
+>**Lưu ý:**
+>- Gặp lỗi, vui lòng [**comment trong nhóm Zalo**](https://zalo.me/g/boiqoq426) hoặc [**liên hệ livechat**](https://support.dichvusale.io.vn) để được hỗ trợ fix nhanh nhất.
+>- **Bắt buộc ghi Credit** nếu bạn chia sẻ hoặc chỉnh sửa lại code.
 
 ---
 
