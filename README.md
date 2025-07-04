@@ -8,21 +8,21 @@ Speep Wed – Công cụ tuyệt vời cho người sống vội!
 
 1️⃣ **Tải Tampermonkey**
 
-- [Download Tampermonkey Cho Máy Tính](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
-- [Download Tampermonkey Cho Điện Thoại](https://chromewebstore.google.com/detail/tampermonkey-legacy/lcmhijbkigalmkeommnijlpobloojgfn)
+>- [Download Tampermonkey Cho Máy Tính](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)
+>- [Download Tampermonkey Cho Điện Thoại](https://chromewebstore.google.com/detail/tampermonkey-legacy/lcmhijbkigalmkeommnijlpobloojgfn)
 
 2️⃣ **Cài đặt Script**
 
-Bấm vào đây sau khi cài Tampermonkey để tự động cài đặt script:
+>Bấm vào đây sau khi cài Tampermonkey để tự động cài đặt script:
 
-[Install Bypass](https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev.js)
+>[Install Speep Wed By LAMDev](https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev.js)
 
 3️⃣ **Sử dụng**
 
-- Sau khi cài đặt xong, vào bất kỳ website nào.
-- Nhấn nút ⚡ nằm ở góc dưới bên phải để mở menu điều khiển.
-- Chọn tốc độ mong muốn (x2, x5, x10, x100, x1000).
-- Bật/tắt script, xóa cookie, tải lại trang, hoặc báo lỗi nếu cần.
+>- Sau khi cài đặt xong, vào bất kỳ website nào.
+>- Nhấn nút ⚡ nằm ở góc dưới bên phải để mở menu điều khiển.
+>- Chọn tốc độ mong muốn (x2, x5, x10, x100, x1000).
+>- Bật/tắt script, xóa cookie, tải lại trang, hoặc báo lỗi nếu cần.
 
 > Từ nay, chờ đợi chỉ là dĩ vãng!
 
