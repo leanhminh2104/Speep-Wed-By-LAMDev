@@ -188,8 +188,8 @@
   if (window.hadesToggleScriptLoaded) return;
   window.hadesToggleScriptLoaded = true;
 
-  const SPEEDS = { 2: 2, 5: 5, 10: 10, 100: 100, 1000: 1000 };
-  let currentMultiplier = localStorage.getItem('hadesSpeedMultiplier') || 100;
+  const SPEEDS = { 1: 1, 2: 2, 5: 5, 10: 10, 100: 100, 1000: 1000 };
+  let currentMultiplier = localStorage.getItem('hadesSpeedMultiplier') || 1;
   let enabled = localStorage.getItem('hadesScriptEnabled') === 'true';
 
   const iconBtn = document.createElement('div');
