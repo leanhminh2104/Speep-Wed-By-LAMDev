@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Speep Wed By LAMDev
 // @namespace    http://tampermonkey.net/
-// @version      2.3
-// @description  Menu quản lý script tăng tốc timeout - Không dùng SweetAlert2
+// @version      2.4
+// @description  Menu quản lý script tăng tốc timeout - có Speep video
 // @author       Hades
 // @match        *://*/*
 // @grant        none
