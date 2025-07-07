@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      2.4
 // @description  Menu quản lý script tăng tốc timeout - có Speep video
-// @author       Hades
+// @author       LAMDev
 // @match        *://*/*
 // @grant        none
 // @icon         https://i.pinimg.com/236x/26/fc/2f/26fc2faf0e4a6628341e1a6f975654e7.jpg
