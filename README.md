@@ -16,7 +16,7 @@ Speep Wed – Công cụ tuyệt vời cho người sống vội!
 >Bấm vào đây sau khi cài Tampermonkey để tự động cài đặt script:
 
 >[Install Speep Wed By LAMDev v2.3 ](https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v2.3.js)
->>...
+>>Speep Yeumoney,...
 >[Install Speep Wed By LAMDev v2.4 ](https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v2.4.js)
 >>Có thên speep video cho ae xem những wed ko hỗ trợ
 
