@@ -1,5 +1,4 @@
 // ==UserScript==
-// @author       xGreen
 // @require      https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v2.4.js
 // @name         Speep Wed By LAMDev
 // @namespace    http://tampermonkey.net/
