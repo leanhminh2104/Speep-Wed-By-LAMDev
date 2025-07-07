@@ -1,9 +1,9 @@
 // ==UserScript==
 // @author       xGreen
-// @require      https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev.js
+// @require      https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v2.4.js
 // @name         Speep Wed By LAMDev
 // @namespace    http://tampermonkey.net/
-// @version      2.3
+// @version      2.4
 // @description  Menu quản lý script tăng tốc timeout - Không dùng SweetAlert2
 // @author       Hades
 // @match        *://*/*
