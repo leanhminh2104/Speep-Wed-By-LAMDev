@@ -187,8 +187,8 @@
   console.log(devtools);
   if (window.hadesToggleScriptLoaded) return;
   window.hadesToggleScriptLoaded = true;
-
-  const SPEEDS = { 1: 1, 2: 2, 5: 5, 10: 10, 100: 100, 1000: 1000 };
+  
+  const SPEEDS = { 0.25: 0.25, 0.5: 0.5, 0.75: 0.75, 1: 1, 1.25: 1.25, 1.5: 1.5, 1.75: 1.75, 2: 2, 3: 3, 4: 4, 5: 5, 10: 10, 100: 100 };
   let currentMultiplier = localStorage.getItem('hadesSpeedMultiplier') || 1;
   let enabled = localStorage.getItem('hadesScriptEnabled') === 'true';
 
