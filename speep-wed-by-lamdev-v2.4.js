@@ -366,7 +366,7 @@
     patchSpeed();
     showNotification({
       icon: '⚡',
-      title: 'HadesBypass đã kích hoạt!',
+      title: 'Speep Wed Đã Kích Hoạt!',
       text: `Tốc độ x${currentMultiplier}`,
       duration: 4000
     });
