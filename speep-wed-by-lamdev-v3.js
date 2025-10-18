@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Speep Wed By LAMDev - Premium
 // @namespace    http://tampermonkey.net/
-// @version      3.1
+// @version      3.2
 // @description  Menu quản lý script tăng tốc timeout - có Speep video với giao diện đẹp và nhiều tính năng
 // @author       LAMDev
 // @match        *://*/*
@@ -54,18 +54,20 @@
       position: fixed !important;
       bottom: 100px !important;
       right: 30px !important;
-      background: rgba(30, 35, 50, 0.95) !important;
-      padding: 16px !important;
+      background: rgba(30, 35, 50, 0.98) !important;
+      padding: 12px !important;
       border-radius: 16px !important;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
       color: #fff !important;
       z-index: 10000 !important;
       display: none !important;
       flex-direction: column !important;
-      gap: 12px !important;
-      min-width: 300px !important;
+      gap: 8px !important;
+      width: 380px !important;
+      max-height: 500px !important;
+      overflow-y: auto !important;
       backdrop-filter: blur(15px) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
       transition: all 0.3s ease !important;
     }
     
@@ -77,13 +79,13 @@
       display: flex !important;
       justify-content: space-between !important;
       align-items: center !important;
-      margin-bottom: 10px !important;
+      margin-bottom: 5px !important;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-      padding-bottom: 10px !important;
+      padding-bottom: 8px !important;
     }
     
     .hades-title {
-      font-size: 18px !important;
+      font-size: 16px !important;
       font-weight: 600 !important;
       background: linear-gradient(90deg, #ff8a00, #e52e71) !important;
       -webkit-background-clip: text !important;
@@ -91,12 +93,12 @@
     }
     
     .hades-btn {
-      padding: 10px 16px !important;
+      padding: 8px 12px !important;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
       border: none !important;
       border-radius: 8px !important;
       cursor: pointer !important;
-      font-size: 14px !important;
+      font-size: 13px !important;
       color: white !important;
       font-weight: 500 !important;
       transition: all 0.2s ease !important;
@@ -123,24 +125,28 @@
     
     .hades-btn-group {
       display: flex !important;
-      gap: 8px !important;
+      gap: 6px !important;
       width: 100% !important;
+    }
+    
+    .hades-speed-section {
+      margin: 5px 0 !important;
     }
     
     .hades-speed-grid {
       display: grid !important;
-      grid-template-columns: repeat(4, 1fr) !important;
-      gap: 8px !important;
+      grid-template-columns: repeat(6, 1fr) !important;
+      gap: 6px !important;
       margin-top: 5px !important;
     }
     
     .hades-speed-btn {
-      padding: 8px 5px !important;
-      background: rgba(255, 255, 255, 0.1) !important;
-      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      padding: 6px 4px !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
       border-radius: 6px !important;
       cursor: pointer !important;
-      font-size: 12px !important;
+      font-size: 11px !important;
       color: white !important;
       transition: all 0.2s ease !important;
       text-align: center !important;
@@ -148,31 +154,31 @@
     
     .hades-speed-btn:hover {
       background: rgba(102, 126, 234, 0.3) !important;
-      transform: translateY(-2px) !important;
+      transform: translateY(-1px) !important;
     }
     
     .hades-speed-btn.active {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-      box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4) !important;
+      box-shadow: 0 3px 8px rgba(102, 126, 234, 0.4) !important;
     }
     
     .hades-status {
-      font-size: 14px !important;
-      margin-top: 10px !important;
+      font-size: 12px !important;
+      margin-top: 5px !important;
       color: #ccc !important;
       text-align: center !important;
-      padding: 8px !important;
+      padding: 6px !important;
       background: rgba(255, 255, 255, 0.05) !important;
-      border-radius: 8px !important;
+      border-radius: 6px !important;
     }
     
     .hades-slider-container {
-      margin: 10px 0 !important;
+      margin: 8px 0 !important;
     }
     
     .hades-slider {
       width: 100% !important;
-      height: 6px !important;
+      height: 5px !important;
       border-radius: 3px !important;
       background: rgba(255, 255, 255, 0.1) !important;
       outline: none !important;
@@ -182,8 +188,8 @@
     .hades-slider::-webkit-slider-thumb {
       -webkit-appearance: none !important;
       appearance: none !important;
-      width: 18px !important;
-      height: 18px !important;
+      width: 16px !important;
+      height: 16px !important;
       border-radius: 50% !important;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
       cursor: pointer !important;
@@ -192,25 +198,29 @@
     
     .hades-slider-value {
       text-align: center !important;
-      font-size: 14px !important;
-      margin-top: 5px !important;
+      font-size: 12px !important;
+      margin-top: 4px !important;
       color: #ccc !important;
+    }
+    
+    .hades-features-section {
+      margin: 8px 0 !important;
     }
     
     .hades-features-grid {
       display: grid !important;
-      grid-template-columns: repeat(2, 1fr) !important;
-      gap: 8px !important;
-      margin-top: 10px !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 6px !important;
+      margin-top: 5px !important;
     }
     
     .hades-feature-btn {
-      padding: 8px 5px !important;
+      padding: 7px 4px !important;
       background: rgba(255, 255, 255, 0.05) !important;
       border: 1px solid rgba(255, 255, 255, 0.1) !important;
       border-radius: 6px !important;
       cursor: pointer !important;
-      font-size: 12px !important;
+      font-size: 11px !important;
       color: white !important;
       transition: all 0.2s ease !important;
       text-align: center !important;
@@ -220,33 +230,63 @@
       background: rgba(102, 126, 234, 0.2) !important;
     }
     
+    .hades-advanced-section {
+      margin: 8px 0 !important;
+    }
+    
+    .hades-advanced-grid {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 6px !important;
+      margin-top: 5px !important;
+    }
+    
     .hades-footer {
-      font-size: 11px !important;
+      font-size: 10px !important;
       text-align: center !important;
-      margin-top: 10px !important;
+      margin-top: 8px !important;
       color: #888 !important;
       border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-      padding-top: 10px !important;
+      padding-top: 8px !important;
     }
     
     .hades-theme-toggle {
       position: absolute !important;
-      top: 10px !important;
-      right: 10px !important;
-      width: 30px !important;
-      height: 30px !important;
+      top: 8px !important;
+      right: 8px !important;
+      width: 26px !important;
+      height: 26px !important;
       border-radius: 50% !important;
       background: rgba(255, 255, 255, 0.1) !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       cursor: pointer !important;
-      font-size: 14px !important;
+      font-size: 12px !important;
       transition: all 0.2s ease !important;
     }
     
     .hades-theme-toggle:hover {
       background: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    .hades-section-title {
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      margin-bottom: 4px !important;
+      color: #ccc !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+    }
+    
+    .hades-section-title::before {
+      content: "" !important;
+      display: block !important;
+      width: 3px !important;
+      height: 12px !important;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+      border-radius: 2px !important;
     }
     
     /* Toast notifications */
@@ -257,20 +297,20 @@
       z-index: 10000 !important;
       display: flex !important;
       flex-direction: column !important;
-      gap: 10px !important;
+      gap: 8px !important;
     }
     
     .hades-toast {
       display: flex !important;
       align-items: flex-start !important;
       gap: 10px !important;
-      padding: 12px 16px !important;
+      padding: 10px 14px !important;
       background: rgba(30, 35, 50, 0.95) !important;
       color: #fff !important;
-      border-radius: 12px !important;
+      border-radius: 10px !important;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
       font-family: 'Poppins', sans-serif !important;
-      min-width: 280px !important;
+      min-width: 260px !important;
       opacity: 0 !important;
       transform: translateX(100%) !important;
       transition: all 0.4s ease !important;
@@ -289,7 +329,7 @@
     }
     
     .hades-toast-icon {
-      font-size: 20px !important;
+      font-size: 18px !important;
       flex-shrink: 0 !important;
     }
     
@@ -299,21 +339,75 @@
     
     .hades-toast-title {
       font-weight: 600 !important;
-      margin-bottom: 4px !important;
+      margin-bottom: 3px !important;
+      font-size: 13px !important;
     }
     
     .hades-toast-text {
-      font-size: 13px !important;
+      font-size: 12px !important;
       color: #ccc !important;
     }
     
     .hades-toast-close {
       margin-left: auto !important;
       cursor: pointer !important;
-      font-size: 18px !important;
-      padding: 0 4px !important;
+      font-size: 16px !important;
+      padding: 0 3px !important;
       color: #aaa !important;
       flex-shrink: 0 !important;
+    }
+    
+    /* Light theme */
+    .hades-menu.light {
+      background: rgba(248, 250, 252, 0.98) !important;
+      color: #333 !important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .hades-menu.light .hades-btn {
+      color: white !important;
+    }
+    
+    .hades-menu.light .hades-speed-btn {
+      background: rgba(0, 0, 0, 0.05) !important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+      color: #333 !important;
+    }
+    
+    .hades-menu.light .hades-speed-btn:hover {
+      background: rgba(102, 126, 234, 0.2) !important;
+    }
+    
+    .hades-menu.light .hades-speed-btn.active {
+      color: white !important;
+    }
+    
+    .hades-menu.light .hades-feature-btn {
+      background: rgba(0, 0, 0, 0.03) !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      color: #333 !important;
+    }
+    
+    .hades-menu.light .hades-feature-btn:hover {
+      background: rgba(102, 126, 234, 0.15) !important;
+    }
+    
+    .hades-menu.light .hades-status {
+      color: #666 !important;
+      background: rgba(0, 0, 0, 0.03) !important;
+    }
+    
+    .hades-menu.light .hades-section-title {
+      color: #555 !important;
+    }
+    
+    .hades-menu.light .hades-footer {
+      color: #777 !important;
+      border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .hades-menu.light .hades-menu-header {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
     }
   `;
 
@@ -323,11 +417,17 @@
   document.head.appendChild(style);
 
   // Cấu hình
-  const SPEEDS = { 0.25: 0.25, 0.5: 0.5, 0.75: 0.75, 1: 1, 1.25: 1.25, 1.5: 1.5, 1.75: 1.75, 2: 2, 3: 3, 4: 4, 5: 5, 10: 10, 100: 100 };
+  const SPEEDS = { 
+    0.25: 0.25, 0.5: 0.5, 0.75: 0.75, 1: 1, 
+    1.25: 1.25, 1.5: 1.5, 1.75: 1.75, 2: 2, 
+    3: 3, 4: 4, 5: 5, 10: 10 
+  };
+  
   let currentMultiplier = parseFloat(localStorage.getItem('hadesSpeedMultiplier') || 1);
   let enabled = localStorage.getItem('hadesScriptEnabled') === 'true';
   let currentTheme = localStorage.getItem('hadesTheme') || 'dark';
   let menuVisible = false;
+  let videoObserver = null;
 
   // Lưu các hàm gốc
   const originalSetTimeout = window.setTimeout;
@@ -341,7 +441,7 @@
 
   // Tạo menu
   const menu = document.createElement('div');
-  menu.className = 'hades-container hades-menu';
+  menu.className = `hades-container hades-menu ${currentTheme === 'light' ? 'light' : ''}`;
 
   // Header menu
   const menuHeader = document.createElement('div');
@@ -357,7 +457,6 @@
   themeToggle.title = 'Chuyển đổi chế độ sáng/tối';
   
   menuHeader.appendChild(title);
-  menuHeader.appendChild(themeToggle);
   menu.appendChild(menuHeader);
 
   // Nhóm nút chức năng chính
@@ -412,11 +511,13 @@
   sliderContainer.appendChild(sliderValue);
   menu.appendChild(sliderContainer);
 
-  // Grid tốc độ nhanh
+  // Section tốc độ nhanh
+  const speedSection = document.createElement('div');
+  speedSection.className = 'hades-speed-section';
+  
   const speedLabel = document.createElement('div');
-  speedLabel.textContent = 'Tốc độ nhanh:';
-  speedLabel.style.cssText = 'font-size: 14px; margin-bottom: 5px; color: #ccc;';
-  menu.appendChild(speedLabel);
+  speedLabel.className = 'hades-section-title';
+  speedLabel.textContent = 'Tốc độ nhanh';
   
   const speedGrid = document.createElement('div');
   speedGrid.className = 'hades-speed-grid';
@@ -438,13 +539,17 @@
     speedGrid.appendChild(b);
   });
   
-  menu.appendChild(speedGrid);
+  speedSection.appendChild(speedLabel);
+  speedSection.appendChild(speedGrid);
+  menu.appendChild(speedSection);
 
-  // Grid tính năng bổ sung
+  // Section tính năng bổ sung
+  const featuresSection = document.createElement('div');
+  featuresSection.className = 'hades-features-section';
+  
   const featuresLabel = document.createElement('div');
-  featuresLabel.textContent = 'Tính năng bổ sung:';
-  featuresLabel.style.cssText = 'font-size: 14px; margin: 15px 0 5px; color: #ccc;';
-  menu.appendChild(featuresLabel);
+  featuresLabel.className = 'hades-section-title';
+  featuresLabel.textContent = 'Tính năng chính';
   
   const featuresGrid = document.createElement('div');
   featuresGrid.className = 'hades-features-grid';
@@ -452,6 +557,8 @@
   const features = [
     { text: '🔍 Tìm video', action: () => findVideos() },
     { text: '📊 Thống kê', action: () => showStats() },
+    { text: '🎬 Video Info', action: () => showVideoInfo() },
+    { text: '⏱️ Timer Ctrl', action: () => showTimerControl() },
     { text: '⚙️ Cài đặt', action: () => showSettings() },
     { text: '💾 Xuất cài đặt', action: () => exportSettings() }
   ];
@@ -464,7 +571,37 @@
     featuresGrid.appendChild(btn);
   });
   
-  menu.appendChild(featuresGrid);
+  featuresSection.appendChild(featuresLabel);
+  featuresSection.appendChild(featuresGrid);
+  menu.appendChild(featuresSection);
+
+  // Section tính năng nâng cao
+  const advancedSection = document.createElement('div');
+  advancedSection.className = 'hades-advanced-section';
+  
+  const advancedLabel = document.createElement('div');
+  advancedLabel.className = 'hades-section-title';
+  advancedLabel.textContent = 'Tính năng nâng cao';
+  
+  const advancedGrid = document.createElement('div');
+  advancedGrid.className = 'hades-advanced-grid';
+  
+  const advancedFeatures = [
+    { text: '🔒 Khóa FPS', action: () => lockFPS() },
+    { text: '🎚️ Tùy chỉnh nâng cao', action: () => showAdvancedSettings() }
+  ];
+  
+  advancedFeatures.forEach(feature => {
+    const btn = document.createElement('button');
+    btn.className = 'hades-feature-btn';
+    btn.textContent = feature.text;
+    btn.addEventListener('click', feature.action);
+    advancedGrid.appendChild(btn);
+  });
+  
+  advancedSection.appendChild(advancedLabel);
+  advancedSection.appendChild(advancedGrid);
+  menu.appendChild(advancedSection);
 
   // Trạng thái
   const status = document.createElement('div');
@@ -475,8 +612,11 @@
   // Footer
   const footer = document.createElement('div');
   footer.className = 'hades-footer';
-  footer.textContent = 'Speep Wed Premium v3.1 • By LAMDev';
+  footer.innerHTML = 'Speep Wed Premium v3.2 • By <b>LAMDev</b>';
   menu.appendChild(footer);
+
+  // Thêm theme toggle vào menu (sau khi menu đã được tạo)
+  menu.appendChild(themeToggle);
 
   // Thêm vào DOM
   document.body.appendChild(iconBtn);
@@ -499,7 +639,7 @@
     currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
     localStorage.setItem('hadesTheme', currentTheme);
     themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
-    applyTheme();
+    menu.className = `hades-container hades-menu ${currentTheme === 'light' ? 'light' : ''}`;
   });
 
   toggleBtn.addEventListener('click', () => {
@@ -574,19 +714,6 @@
     menuVisible = false;
   }
 
-  // Áp dụng theme
-  function applyTheme() {
-    if (currentTheme === 'light') {
-      menu.style.background = 'rgba(240, 240, 245, 0.95)';
-      menu.style.color = '#333';
-      menu.style.border = '1px solid rgba(0, 0, 0, 0.1)';
-    } else {
-      menu.style.background = 'rgba(30, 35, 50, 0.95)';
-      menu.style.color = '#fff';
-      menu.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-    }
-  }
-
   // Cập nhật nút tốc độ
   function updateSpeedButtons() {
     const speedButtons = menu.querySelectorAll('.hades-speed-btn');
@@ -616,6 +743,8 @@
     window.setInterval = (fn, delay) => originalSetInterval(fn, delay / currentMultiplier);
     // Patch video playback
     patchVideoSpeed();
+    // Patch requestAnimationFrame
+    patchAnimationFrame();
   }
 
   // Khôi phục hàm gốc
@@ -623,6 +752,7 @@
     window.setTimeout = originalSetTimeout;
     window.setInterval = originalSetInterval;
     restoreVideoSpeed();
+    restoreAnimationFrame();
   }
 
   // Patch tốc độ video
@@ -639,6 +769,26 @@
     });
   }
 
+  // Patch requestAnimationFrame để tăng tốc animation
+  function patchAnimationFrame() {
+    if (!window.originalRequestAnimationFrame) {
+      window.originalRequestAnimationFrame = window.requestAnimationFrame;
+    }
+    
+    window.requestAnimationFrame = function(callback) {
+      return window.originalRequestAnimationFrame(function(timestamp) {
+        callback(timestamp * currentMultiplier);
+      });
+    };
+  }
+
+  // Khôi phục requestAnimationFrame gốc
+  function restoreAnimationFrame() {
+    if (window.originalRequestAnimationFrame) {
+      window.requestAnimationFrame = window.originalRequestAnimationFrame;
+    }
+  }
+
   // Áp dụng patch
   function applyPatch() {
     if (window.hadesFinalScriptLoaded) return;
@@ -646,10 +796,24 @@
 
     patchSpeed();
     
-    const observer = new MutationObserver(patchVideoSpeed);
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Theo dõi các video mới được thêm vào trang
+    videoObserver = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        mutation.addedNodes.forEach(function(node) {
+          if (node.nodeName === 'VIDEO' || (node.querySelector && node.querySelector('video'))) {
+            patchVideoSpeed();
+          }
+        });
+      });
+    });
+    
+    videoObserver.observe(document.body, { 
+      childList: true, 
+      subtree: true 
+    });
 
-    setInterval(patchSpeed, 500);
+    // Kiểm tra lại mỗi 2 giây để đảm bảo tất cả video đều được patch
+    setInterval(patchVideoSpeed, 2000);
   }
 
   // Xóa cookie
@@ -755,21 +919,82 @@
   function showStats() {
     const videos = document.querySelectorAll('video');
     const totalVideos = videos.length;
+    const playingVideos = Array.from(videos).filter(v => !v.paused && !v.ended).length;
     const totalDuration = Array.from(videos).reduce((acc, video) => acc + (video.duration || 0), 0);
     
     showNotification({
       icon: '📊',
       title: 'Thống kê Video',
-      text: `Tổng video: ${totalVideos} | Tổng thời lượng: ${Math.round(totalDuration)}s`,
+      text: `Tổng: ${totalVideos} | Đang phát: ${playingVideos} | Thời lượng: ${Math.round(totalDuration)}s`,
       duration: 5000
     });
   }
 
-  // Tính năng cài đặt
+  // Thông tin video
+  function showVideoInfo() {
+    const videos = document.querySelectorAll('video');
+    if (videos.length === 0) {
+      showNotification({
+        icon: '🎬',
+        title: 'Không có video',
+        text: 'Không tìm thấy video nào trên trang',
+        duration: 3000
+      });
+      return;
+    }
+    
+    let info = `Tìm thấy ${videos.length} video:\n\n`;
+    videos.forEach((video, index) => {
+      info += `Video ${index + 1}:\n`;
+      info += `- Tốc độ: ${video.playbackRate}x\n`;
+      info += `- Thời lượng: ${video.duration ? Math.round(video.duration) + 's' : 'Không xác định'}\n`;
+      info += `- Trạng thái: ${video.paused ? 'Tạm dừng' : 'Đang phát'}\n`;
+      info += `- Âm lượng: ${Math.round(video.volume * 100)}%\n\n`;
+    });
+    
+    showNotification({
+      icon: 'ℹ️',
+      title: 'Thông tin Video',
+      text: info,
+      duration: 6000
+    });
+  }
+
+  // Điều khiển timer
+  function showTimerControl() {
+    showNotification({
+      icon: '⏱️',
+      title: 'Điều khiển Timer',
+      text: 'Tính năng đang phát triển...',
+      duration: 3000
+    });
+  }
+
+  // Cài đặt
   function showSettings() {
     showNotification({
       icon: '⚙️',
       title: 'Cài đặt',
+      text: 'Tính năng đang phát triển...',
+      duration: 3000
+    });
+  }
+
+  // Khóa FPS
+  function lockFPS() {
+    showNotification({
+      icon: '🔒',
+      title: 'Khóa FPS',
+      text: 'Tính năng đang phát triển...',
+      duration: 3000
+    });
+  }
+
+  // Cài đặt nâng cao
+  function showAdvancedSettings() {
+    showNotification({
+      icon: '🎚️',
+      title: 'Tùy chỉnh nâng cao',
       text: 'Tính năng đang phát triển...',
       duration: 3000
     });
@@ -780,7 +1005,8 @@
     const settings = {
       enabled: enabled,
       speed: currentMultiplier,
-      theme: currentTheme
+      theme: currentTheme,
+      exportDate: new Date().toISOString()
     };
     
     const settingsString = JSON.stringify(settings, null, 2);
@@ -802,9 +1028,6 @@
       duration: 3000
     });
   }
-
-  // Áp dụng theme khi khởi động
-  applyTheme();
 
   // Tự động kích hoạt nếu đã bật
   if (enabled) applyPatch();
