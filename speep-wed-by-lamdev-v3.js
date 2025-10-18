@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Speep Wed By LAMDev - Ultimate
+// @name         Speep Wed By LAMDev - Ultimate Full
 // @namespace    http://tampermonkey.net/
 // @version      3.0
-// @description  Menu tua video với đầy đủ tính năng: tua nhanh/chậm, điều khiển thời gian, chặn quảng cáo
+// @description  Menu điều khiển video đầy đủ tính năng: tua, điều khiển thời gian, chặn quảng cáo, và nhiều hơn nữa
 // @author       LAMDev
 // @match        *://*/*
 // @grant        none
@@ -62,8 +62,8 @@
       display: none !important;
       flex-direction: column !important;
       gap: 8px !important;
-      width: 340px !important;
-      max-height: 480px !important;
+      width: 360px !important;
+      max-height: 520px !important;
       overflow-y: auto !important;
       backdrop-filter: blur(15px) !important;
       border: 1px solid rgba(255, 255, 255, 0.15) !important;
@@ -73,7 +73,7 @@
     /* Responsive design */
     @media (max-width: 480px) {
       .hades-menu {
-        width: 300px !important;
+        width: 320px !important;
         right: 10px !important;
         bottom: 70px !important;
       }
@@ -86,7 +86,7 @@
     
     @media (max-width: 360px) {
       .hades-menu {
-        width: 280px !important;
+        width: 300px !important;
         right: 5px !important;
         left: 5px !important;
         bottom: 65px !important;
@@ -275,6 +275,40 @@
       font-size: 12px !important;
     }
     
+    .hades-volume-control {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      margin: 8px 0 !important;
+    }
+    
+    .hades-volume-slider {
+      flex: 1 !important;
+      height: 4px !important;
+      border-radius: 2px !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      outline: none !important;
+      -webkit-appearance: none !important;
+    }
+    
+    .hades-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      width: 12px !important;
+      height: 12px !important;
+      border-radius: 50% !important;
+      background: #fff !important;
+      cursor: pointer !important;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .hades-advanced-controls {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 4px !important;
+      margin: 8px 0 !important;
+    }
+    
     .hades-status {
       font-size: 10px !important;
       margin-top: 4px !important;
@@ -461,6 +495,10 @@
       color: #333 !important;
     }
     
+    .hades-menu.light .hades-volume-slider {
+      background: rgba(0, 0, 0, 0.1) !important;
+    }
+    
     .hades-menu.light .hades-status {
       color: #666 !important;
       background: rgba(0, 0, 0, 0.03) !important;
@@ -489,6 +527,9 @@
   let enabled = localStorage.getItem('hadesScriptEnabled') === 'true';
   let currentTheme = localStorage.getItem('hadesTheme') || 'dark';
   let blockAds = localStorage.getItem('hadesBlockAds') === 'true';
+  let autoSkip = localStorage.getItem('hadesAutoSkip') === 'true';
+  let rememberSpeed = localStorage.getItem('hadesRememberSpeed') === 'true';
+  let currentVolume = parseFloat(localStorage.getItem('hadesVolume') || 1);
   let menuVisible = false;
   let videoObserver = null;
   let adBlockerObserver = null;
@@ -501,7 +542,7 @@
   const iconBtn = document.createElement('div');
   iconBtn.className = 'hades-container hades-icon-btn';
   iconBtn.textContent = '⚡';
-  iconBtn.title = 'Mở menu Speed Wed By LAMDev';
+  iconBtn.title = 'Mở menu Speep Wed Ultimate';
 
   // Tạo menu
   const menu = document.createElement('div');
@@ -579,7 +620,7 @@
   speedControls.appendChild(increaseSpeedBtn);
   menu.appendChild(speedControls);
 
-  // Section điều khiển video
+  // Section điều khiển video cơ bản
   const controlsSection = document.createElement('div');
   controlsSection.className = 'hades-controls-section';
   
@@ -598,7 +639,7 @@
     { text: '⏸️ Tạm dừng', action: () => togglePlayPause() },
     { text: '▶️ Phát', action: () => playVideo() },
     { text: '⏹️ Dừng', action: () => stopVideo() },
-    { text: '🔊 Âm lượng', action: () => toggleMute() }
+    { text: '🔇 Tắt tiếng', action: () => toggleMute() }
   ];
   
   controls.forEach(control => {
@@ -612,6 +653,26 @@
   controlsSection.appendChild(controlsLabel);
   controlsSection.appendChild(controlsGrid);
   menu.appendChild(controlsSection);
+
+  // Điều khiển âm lượng
+  const volumeControl = document.createElement('div');
+  volumeControl.className = 'hades-volume-control';
+  
+  const volumeLabel = document.createElement('div');
+  volumeLabel.textContent = '🔊';
+  volumeLabel.style.fontSize = '12px';
+  
+  const volumeSlider = document.createElement('input');
+  volumeSlider.type = 'range';
+  volumeSlider.className = 'hades-volume-slider';
+  volumeSlider.min = '0';
+  volumeSlider.max = '1';
+  volumeSlider.step = '0.1';
+  volumeSlider.value = currentVolume;
+  
+  volumeControl.appendChild(volumeLabel);
+  volumeControl.appendChild(volumeSlider);
+  menu.appendChild(volumeControl);
 
   // Nhập thời gian để tua đến
   const timeControl = document.createElement('div');
@@ -645,6 +706,27 @@
   timeControl.appendChild(seekToBtn);
   menu.appendChild(timeControl);
 
+  // Điều khiển nâng cao
+  const advancedControls = document.createElement('div');
+  advancedControls.className = 'hades-advanced-controls';
+  
+  const advancedControlsList = [
+    { text: '🔁 Lặp lại', action: () => toggleLoop() },
+    { text: '⏭️ Tự động bỏ qua', action: () => toggleAutoSkip() },
+    { text: '💾 Nhớ tốc độ', action: () => toggleRememberSpeed() },
+    { text: '📊 Thống kê', action: () => showStats() }
+  ];
+  
+  advancedControlsList.forEach(control => {
+    const btn = document.createElement('button');
+    btn.className = 'hades-control-btn';
+    btn.textContent = control.text;
+    btn.addEventListener('click', control.action);
+    advancedControls.appendChild(btn);
+  });
+  
+  menu.appendChild(advancedControls);
+
   // Nhóm nút chức năng chính
   const mainBtnGroup = document.createElement('div');
   mainBtnGroup.className = 'hades-btn-group';
@@ -674,9 +756,9 @@
   
   const features = [
     { text: '🔍 Tìm Video', action: () => findVideos() },
-    { text: '📊 Thống Kê', action: () => showStats() },
     { text: 'ℹ️ Thông Tin', action: () => showVideoInfo() },
     { text: '🚫 Chặn QC', action: () => toggleAdBlock(), active: blockAds },
+    { text: '🎬 Toàn Màn Hình', action: () => toggleFullscreen() },
     { text: '💾 Lưu CĐ', action: () => exportSettings() },
     { text: '⚙️ Cài Đặt', action: () => showSettings() }
   ];
@@ -703,7 +785,7 @@
   // Footer
   const footer = document.createElement('div');
   footer.className = 'hades-footer';
-  footer.innerHTML = 'Speep Wed Ultimate v6.0 • <b>LAMDev</b>';
+  footer.innerHTML = 'Speep Wed Ultimate v7.0 • <b>LAMDev</b>';
   menu.appendChild(footer);
 
   // Thêm theme toggle vào menu
@@ -742,7 +824,7 @@
       applyPatch();
       showNotification({
         icon: '⚡',
-        title: 'Đã kích hoạt tua!',
+        title: 'Đã kích hoạt Speep Wed!',
         text: `Tốc độ: x${currentMultiplier.toFixed(1)}`,
         duration: 3000
       });
@@ -750,7 +832,7 @@
       restoreOriginalFunctions();
       showNotification({
         icon: '⏸️',
-        title: 'Đã tắt tua',
+        title: 'Đã tắt Speep Wed',
         text: 'Khôi phục tốc độ mặc định',
         duration: 2000
       });
@@ -824,6 +906,12 @@
       text: `Tốc độ: x${currentMultiplier.toFixed(1)}`,
       duration: 1500
     });
+  });
+
+  volumeSlider.addEventListener('input', () => {
+    currentVolume = parseFloat(volumeSlider.value);
+    localStorage.setItem('hadesVolume', currentVolume);
+    setVolume(currentVolume);
   });
 
   seekToBtn.addEventListener('click', () => {
@@ -928,6 +1016,7 @@
         mutation.addedNodes.forEach(function(node) {
           if (node.nodeName === 'VIDEO' || (node.querySelector && node.querySelector('video'))) {
             patchVideoSpeed();
+            setVolume(currentVolume);
           }
         });
       });
@@ -939,6 +1028,13 @@
     });
 
     setInterval(patchVideoSpeed, 2000);
+  }
+
+  // Điều khiển âm lượng
+  function setVolume(volume) {
+    document.querySelectorAll('video').forEach(video => {
+      video.volume = volume;
+    });
   }
 
   // Chặn quảng cáo
@@ -1066,7 +1162,7 @@
     localStorage.setItem('hadesBlockAds', blockAds);
     
     // Cập nhật nút
-    const adBlockBtn = document.querySelector('.hades-feature-btn:nth-child(4)');
+    const adBlockBtn = document.querySelector('.hades-feature-btn:nth-child(3)');
     if (adBlockBtn) {
       if (blockAds) {
         adBlockBtn.classList.add('active');
@@ -1254,6 +1350,90 @@
     });
   }
 
+  function toggleLoop() {
+    const videos = document.querySelectorAll('video');
+    let anyLooping = false;
+    
+    videos.forEach(video => {
+      if (!video.loop) {
+        video.loop = true;
+        anyLooping = true;
+      }
+    });
+    
+    if (!anyLooping) {
+      videos.forEach(video => {
+        video.loop = false;
+      });
+    }
+    
+    showNotification({
+      icon: '🔁',
+      title: anyLooping ? 'Đã bật lặp lại' : 'Đã tắt lặp lại',
+      text: '',
+      duration: 1500
+    });
+  }
+
+  function toggleAutoSkip() {
+    autoSkip = !autoSkip;
+    localStorage.setItem('hadesAutoSkip', autoSkip);
+    
+    showNotification({
+      icon: '⏭️',
+      title: autoSkip ? 'Đã bật tự động bỏ qua' : 'Đã tắt tự động bỏ qua',
+      text: '',
+      duration: 2000
+    });
+  }
+
+  function toggleRememberSpeed() {
+    rememberSpeed = !rememberSpeed;
+    localStorage.setItem('hadesRememberSpeed', rememberSpeed);
+    
+    showNotification({
+      icon: '💾',
+      title: rememberSpeed ? 'Đã bật nhớ tốc độ' : 'Đã tắt nhớ tốc độ',
+      text: '',
+      duration: 2000
+    });
+  }
+
+  function toggleFullscreen() {
+    const videos = document.querySelectorAll('video');
+    if (videos.length > 0) {
+      const video = videos[0];
+      if (!document.fullscreenElement) {
+        if (video.requestFullscreen) {
+          video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) {
+          video.webkitRequestFullscreen();
+        } else if (video.mozRequestFullScreen) {
+          video.mozRequestFullScreen();
+        } else if (video.msRequestFullscreen) {
+          video.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
+    }
+    
+    showNotification({
+      icon: '🎬',
+      title: 'Chuyển đổi toàn màn hình',
+      text: '',
+      duration: 1500
+    });
+  }
+
   // Các hàm tính năng khác
   function findVideos() {
     const videos = document.querySelectorAll('video');
@@ -1286,11 +1466,13 @@
     const videos = document.querySelectorAll('video');
     const totalVideos = videos.length;
     const playingVideos = Array.from(videos).filter(v => !v.paused && !v.ended).length;
+    const mutedVideos = Array.from(videos).filter(v => v.muted).length;
+    const totalDuration = Array.from(videos).reduce((acc, video) => acc + (video.duration || 0), 0);
     
     showNotification({
       icon: '📊',
-      title: 'Thống kê',
-      text: `Tổng: ${totalVideos} video | Đang phát: ${playingVideos}`,
+      title: 'Thống kê Video',
+      text: `Tổng: ${totalVideos} | Đang phát: ${playingVideos} | Tắt tiếng: ${mutedVideos}`,
       duration: 3000
     });
   }
@@ -1310,7 +1492,7 @@
     let info = `${videos.length} video:\n`;
     videos.forEach((video, index) => {
       const time = `${Math.floor(video.currentTime / 60)}:${Math.floor(video.currentTime % 60).toString().padStart(2, '0')}`;
-      const duration = `${Math.floor(video.duration / 60)}:${Math.floor(video.duration % 60).toString().padStart(2, '0')}`;
+      const duration = video.duration ? `${Math.floor(video.duration / 60)}:${Math.floor(video.duration % 60).toString().padStart(2, '0')}` : 'Không xác định';
       
       info += `#${index + 1}: ${video.playbackRate.toFixed(1)}x | `;
       info += video.paused ? '⏸️' : '▶️';
@@ -1328,7 +1510,7 @@
   function showSettings() {
     showNotification({
       icon: '⚙️',
-      title: 'Cài đặt',
+      title: 'Cài đặt nâng cao',
       text: 'Tính năng đang phát triển',
       duration: 2000
     });
@@ -1340,6 +1522,9 @@
       speed: currentMultiplier,
       theme: currentTheme,
       blockAds: blockAds,
+      autoSkip: autoSkip,
+      rememberSpeed: rememberSpeed,
+      volume: currentVolume,
       exportDate: new Date().toISOString()
     };
     
@@ -1371,4 +1556,7 @@
   if (blockAds) {
     setupAdBlocker();
   }
+  
+  // Áp dụng âm lượng đã lưu
+  setVolume(currentVolume);
 })();
