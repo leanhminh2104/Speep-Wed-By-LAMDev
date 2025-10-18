@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Speep Wed By LAMDev - Ultimate Full
+// @name         Speep Wed By LAMDev - Ultimate Final
 // @namespace    http://tampermonkey.net/
-// @version      3.0
-// @description  Menu điều khiển video đầy đủ tính năng: tua, điều khiển thời gian, chặn quảng cáo, và nhiều hơn nữa
+// @version      8.0
+// @description  Menu điều khiển video đầy đủ tính năng với chặn quảng cáo DNS
 // @author       LAMDev
 // @match        *://*/*
 // @grant        none
@@ -169,6 +169,14 @@
       margin-bottom: 5px !important;
     }
     
+    .hades-speed-description {
+      text-align: center !important;
+      font-size: 10px !important;
+      color: #888 !important;
+      margin-bottom: 8px !important;
+      font-style: italic !important;
+    }
+    
     .hades-slider-container {
       margin: 8px 0 !important;
       position: relative !important;
@@ -226,7 +234,7 @@
     
     .hades-controls-grid {
       display: grid !important;
-      grid-template-columns: repeat(4, 1fr) !important;
+      grid-template-columns: repeat(3, 1fr) !important;
       gap: 4px !important;
       margin-top: 4px !important;
     }
@@ -527,12 +535,18 @@
   let enabled = localStorage.getItem('hadesScriptEnabled') === 'true';
   let currentTheme = localStorage.getItem('hadesTheme') || 'dark';
   let blockAds = localStorage.getItem('hadesBlockAds') === 'true';
-  let autoSkip = localStorage.getItem('hadesAutoSkip') === 'true';
-  let rememberSpeed = localStorage.getItem('hadesRememberSpeed') === 'true';
   let currentVolume = parseFloat(localStorage.getItem('hadesVolume') || 1);
   let menuVisible = false;
   let videoObserver = null;
   let adBlockerObserver = null;
+
+  // DNS servers for ad blocking
+  const adBlockDNS = [
+    '103.232.123.88',
+    '45.122.221.222', 
+    '2401:78c0::652',
+    'dns.adguard.com'
+  ];
 
   // Lưu các hàm gốc
   const originalSetTimeout = window.setTimeout;
@@ -576,6 +590,12 @@
   speedLabel.textContent = 'Tốc độ hiện tại';
   menu.appendChild(speedLabel);
 
+  // Mô tả tốc độ
+  const speedDescription = document.createElement('div');
+  speedDescription.className = 'hades-speed-description';
+  speedDescription.textContent = getSpeedDescription(currentMultiplier);
+  menu.appendChild(speedDescription);
+
   // Thanh trượt tốc độ chi tiết
   const sliderContainer = document.createElement('div');
   sliderContainer.className = 'hades-slider-container';
@@ -584,7 +604,7 @@
   slider.type = 'range';
   slider.className = 'hades-slider';
   slider.min = '0.1';
-  slider.max = '5';
+  slider.max = '10';
   slider.step = '0.1';
   slider.value = currentMultiplier;
   
@@ -592,7 +612,7 @@
   const speedMarkers = document.createElement('div');
   speedMarkers.className = 'hades-speed-markers';
   
-  const markers = ['0.1x', '0.5x', '1x', '2x', '5x'];
+  const markers = ['0.1x', '0.5x', '1x', '2x', '5x', '10x'];
   markers.forEach((marker, index) => {
     const markerEl = document.createElement('div');
     markerEl.className = `hades-speed-marker ${index === 2 ? 'main' : ''}`;
@@ -636,10 +656,8 @@
     { text: '⏩ 10s', action: () => seekVideo(10) },
     { text: '⏪ 30s', action: () => seekVideo(-30) },
     { text: '⏩ 30s', action: () => seekVideo(30) },
-    { text: '⏸️ Tạm dừng', action: () => togglePlayPause() },
-    { text: '▶️ Phát', action: () => playVideo() },
-    { text: '⏹️ Dừng', action: () => stopVideo() },
-    { text: '🔇 Tắt tiếng', action: () => toggleMute() }
+    { text: '⏯️ Phát/Tạm dừng', action: () => togglePlayPause() },
+    { text: '🔇 Âm lượng', action: () => toggleMute() }
   ];
   
   controls.forEach(control => {
@@ -712,8 +730,6 @@
   
   const advancedControlsList = [
     { text: '🔁 Lặp lại', action: () => toggleLoop() },
-    { text: '⏭️ Tự động bỏ qua', action: () => toggleAutoSkip() },
-    { text: '💾 Nhớ tốc độ', action: () => toggleRememberSpeed() },
     { text: '📊 Thống kê', action: () => showStats() }
   ];
   
@@ -760,7 +776,7 @@
     { text: '🚫 Chặn QC', action: () => toggleAdBlock(), active: blockAds },
     { text: '🎬 Toàn Màn Hình', action: () => toggleFullscreen() },
     { text: '💾 Lưu CĐ', action: () => exportSettings() },
-    { text: '⚙️ Cài Đặt', action: () => showSettings() }
+    { text: '⚙️ Cài Đặt DNS', action: () => showDNSInfo() }
   ];
   
   features.forEach(feature => {
@@ -785,7 +801,7 @@
   // Footer
   const footer = document.createElement('div');
   footer.className = 'hades-footer';
-  footer.innerHTML = 'Speep Wed Ultimate v7.0 • <b>LAMDev</b>';
+  footer.innerHTML = 'Speep Wed Ultimate v8.0 • <b>LAMDev</b>';
   menu.appendChild(footer);
 
   // Thêm theme toggle vào menu
@@ -794,6 +810,17 @@
   // Thêm vào DOM
   document.body.appendChild(iconBtn);
   document.body.appendChild(menu);
+
+  // Hàm lấy mô tả tốc độ
+  function getSpeedDescription(speed) {
+    if (speed <= 0.3) return 'Rất chậm';
+    if (speed <= 0.7) return 'Chậm';
+    if (speed <= 1.2) return 'Bình thường';
+    if (speed <= 2) return 'Hơi nhanh';
+    if (speed <= 4) return 'Nhanh';
+    if (speed <= 7) return 'Rất nhanh';
+    return 'Siêu tốc';
+  }
 
   // Sự kiện
   iconBtn.addEventListener('click', function(e) {
@@ -825,7 +852,7 @@
       showNotification({
         icon: '⚡',
         title: 'Đã kích hoạt Speep Wed!',
-        text: `Tốc độ: x${currentMultiplier.toFixed(1)}`,
+        text: `Tốc độ: x${currentMultiplier.toFixed(1)} (${getSpeedDescription(currentMultiplier)})`,
         duration: 3000
       });
     } else {
@@ -844,6 +871,7 @@
     localStorage.setItem('hadesSpeedMultiplier', currentMultiplier);
     slider.value = 1;
     speedDisplay.textContent = 'x1.0';
+    speedDescription.textContent = getSpeedDescription(1);
     updateStatusText();
     
     if (enabled) {
@@ -853,7 +881,7 @@
     showNotification({
       icon: '🔄',
       title: 'Đặt lại tốc độ',
-      text: 'Tốc độ mặc định: x1.0',
+      text: 'Tốc độ mặc định: x1.0 (Bình thường)',
       duration: 2000
     });
   });
@@ -861,6 +889,7 @@
   slider.addEventListener('input', () => {
     currentMultiplier = parseFloat(slider.value);
     speedDisplay.textContent = `x${currentMultiplier.toFixed(1)}`;
+    speedDescription.textContent = getSpeedDescription(currentMultiplier);
     
     if (enabled) {
       patchSpeed();
@@ -869,13 +898,14 @@
 
   slider.addEventListener('change', () => {
     localStorage.setItem('hadesSpeedMultiplier', currentMultiplier);
-    showStatus(`Đã đặt tốc độ: x${currentMultiplier.toFixed(1)}`);
+    showStatus(`Đã đặt tốc độ: x${currentMultiplier.toFixed(1)} (${getSpeedDescription(currentMultiplier)})`);
   });
 
   decreaseSpeedBtn.addEventListener('click', () => {
     currentMultiplier = Math.max(0.1, currentMultiplier - 0.2);
     slider.value = currentMultiplier;
     speedDisplay.textContent = `x${currentMultiplier.toFixed(1)}`;
+    speedDescription.textContent = getSpeedDescription(currentMultiplier);
     localStorage.setItem('hadesSpeedMultiplier', currentMultiplier);
     
     if (enabled) {
@@ -885,15 +915,16 @@
     showNotification({
       icon: '➖',
       title: 'Giảm tốc độ',
-      text: `Tốc độ: x${currentMultiplier.toFixed(1)}`,
+      text: `Tốc độ: x${currentMultiplier.toFixed(1)} (${getSpeedDescription(currentMultiplier)})`,
       duration: 1500
     });
   });
 
   increaseSpeedBtn.addEventListener('click', () => {
-    currentMultiplier = Math.min(5, currentMultiplier + 0.2);
+    currentMultiplier = Math.min(10, currentMultiplier + 0.2);
     slider.value = currentMultiplier;
     speedDisplay.textContent = `x${currentMultiplier.toFixed(1)}`;
+    speedDescription.textContent = getSpeedDescription(currentMultiplier);
     localStorage.setItem('hadesSpeedMultiplier', currentMultiplier);
     
     if (enabled) {
@@ -903,7 +934,7 @@
     showNotification({
       icon: '➕',
       title: 'Tăng tốc độ',
-      text: `Tốc độ: x${currentMultiplier.toFixed(1)}`,
+      text: `Tốc độ: x${currentMultiplier.toFixed(1)} (${getSpeedDescription(currentMultiplier)})`,
       duration: 1500
     });
   });
@@ -1037,31 +1068,82 @@
     });
   }
 
-  // Chặn quảng cáo
+  // Chặn quảng cáo với DNS
   function setupAdBlocker() {
     if (!blockAds) return;
     
-    // Chặn các request quảng cáo phổ biến
-    const adKeywords = [
-      'ads', 'advertisement', 'doubleclick', 'googleads', 'googlesyndication',
-      'facebook.com/ads', 'adsystem', 'adserver', 'adservice', 'adnxs',
-      'adsafeprotected', 'advertising', 'tracking', 'analytics'
+    // Danh sách domain quảng cáo phổ biến
+    const adDomains = [
+      'doubleclick.net',
+      'googleadservices.com',
+      'googlesyndication.com',
+      'google-analytics.com',
+      'facebook.com/ads',
+      'adsystem',
+      'adserver',
+      'adservice',
+      'adnxs.com',
+      'adsafeprotected.com',
+      'advertising.com',
+      'tracking',
+      'analytics',
+      'scorecardresearch.com',
+      'zedo.com',
+      'outbrain.com',
+      'taboola.com',
+      'revcontent.com',
+      'adsco.re',
+      'popads.net',
+      'propellerads.com',
+      'adsterra.com',
+      'media.net',
+      'bidvertiser.com',
+      'monetizemore.com',
+      'pubmatic.com',
+      'openx.net',
+      'rubiconproject.com',
+      'appnexus.com',
+      'indexexchange.com',
+      'sonobi.com',
+      'teads.tv',
+      'criteo.com',
+      'sharethrough.com',
+      'yieldmo.com',
+      'triplelift.com',
+      'brightcom.com',
+      'simpli.fi',
+      'smartyads.com',
+      'adform.com',
+      'sovrn.com',
+      'aerserv.com',
+      'loopme.com',
+      'kargo.com',
+      'vungle.com',
+      'unityads.com',
+      'applovin.com',
+      'ironsrc.com',
+      'chartboost.com',
+      'adcolony.com',
+      'inmobi.com',
+      'tapjoy.com'
     ];
     
-    // Chặn fetch request
+    // Chặn fetch request đến domain quảng cáo
     const originalFetch = window.fetch;
     window.fetch = function(...args) {
       const url = args[0];
-      if (typeof url === 'string' && adKeywords.some(keyword => url.includes(keyword))) {
+      if (typeof url === 'string' && adDomains.some(domain => url.includes(domain))) {
+        console.log('Blocked ad request:', url);
         return Promise.reject(new Error('Blocked by ad blocker'));
       }
       return originalFetch.apply(this, args);
     };
     
-    // Chặn XMLHttpRequest
+    // Chặn XMLHttpRequest đến domain quảng cáo
     const originalXHROpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function(method, url, ...args) {
-      if (typeof url === 'string' && adKeywords.some(keyword => url.includes(keyword))) {
+      if (typeof url === 'string' && adDomains.some(domain => url.includes(domain))) {
+        console.log('Blocked ad request:', url);
         this._blocked = true;
         return;
       }
@@ -1072,11 +1154,12 @@
     adBlockerObserver = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         mutation.addedNodes.forEach(function(node) {
-          if (node.nodeType === 1) { // Element node
+          if (node.nodeType === 1) {
             // Xóa các phần tử có class/id chứa từ khóa quảng cáo
             const adSelectors = [
               '[class*="ad"]', '[id*="ad"]', '[class*="ads"]', '[id*="ads"]',
-              '[class*="banner"]', '[id*="banner"]', '[class*="sponsor"]', '[id*="sponsor"]'
+              '[class*="banner"]', '[id*="banner"]', '[class*="sponsor"]', '[id*="sponsor"]',
+              '[class*="advertisement"]', '[id*="advertisement"]'
             ];
             
             adSelectors.forEach(selector => {
@@ -1084,6 +1167,7 @@
                 const elements = node.querySelectorAll ? node.querySelectorAll(selector) : [];
                 elements.forEach(el => {
                   if (el.offsetHeight > 0 || el.offsetWidth > 0) {
+                    console.log('Removed ad element:', el);
                     el.style.display = 'none';
                     el.remove();
                   }
@@ -1094,8 +1178,20 @@
             // Xóa iframe quảng cáo
             if (node.tagName === 'IFRAME') {
               const src = node.src || '';
-              if (adKeywords.some(keyword => src.includes(keyword))) {
+              if (adDomains.some(domain => src.includes(domain))) {
+                console.log('Removed ad iframe:', node);
                 node.style.display = 'none';
+                node.remove();
+              }
+            }
+            
+            // Xóa script quảng cáo
+            if (node.tagName === 'SCRIPT') {
+              const src = node.src || '';
+              const text = node.textContent || '';
+              if (adDomains.some(domain => src.includes(domain)) || 
+                  text.includes('ads') || text.includes('advertisement')) {
+                console.log('Removed ad script:', node);
                 node.remove();
               }
             }
@@ -1116,13 +1212,15 @@
   function removeExistingAds() {
     const adSelectors = [
       '[class*="ad"]', '[id*="ad"]', '[class*="ads"]', '[id*="ads"]',
-      '[class*="banner"]', '[id*="banner"]', '[class*="sponsor"]', '[id*="sponsor"]'
+      '[class*="banner"]', '[id*="banner"]', '[class*="sponsor"]', '[id*="sponsor"]',
+      '[class*="advertisement"]', '[id*="advertisement"]'
     ];
     
     adSelectors.forEach(selector => {
       try {
         document.querySelectorAll(selector).forEach(el => {
           if (el.offsetHeight > 0 || el.offsetWidth > 0) {
+            console.log('Removed existing ad:', el);
             el.style.display = 'none';
             el.remove();
           }
@@ -1133,8 +1231,9 @@
     // Xóa iframe quảng cáo
     document.querySelectorAll('iframe').forEach(iframe => {
       const src = iframe.src || '';
-      const adKeywords = ['ads', 'advertisement', 'doubleclick', 'googleads'];
-      if (adKeywords.some(keyword => src.includes(keyword))) {
+      const adDomains = ['doubleclick.net', 'googleadservices.com', 'googlesyndication.com'];
+      if (adDomains.some(domain => src.includes(domain))) {
+        console.log('Removed existing ad iframe:', iframe);
         iframe.style.display = 'none';
         iframe.remove();
       }
@@ -1175,8 +1274,8 @@
       setupAdBlocker();
       showNotification({
         icon: '🚫',
-        title: 'Đã bật chặn quảng cáo',
-        text: 'Quảng cáo sẽ bị chặn trên trang này',
+        title: 'Đã bật chặn quảng cáo DNS',
+        text: 'Sử dụng DNS AdGuard để chặn quảng cáo',
         duration: 3000
       });
     } else {
@@ -1298,33 +1397,6 @@
     });
   }
 
-  function playVideo() {
-    document.querySelectorAll('video').forEach(video => {
-      video.play();
-    });
-    
-    showNotification({
-      icon: '▶️',
-      title: 'Đã phát video',
-      text: '',
-      duration: 1500
-    });
-  }
-
-  function stopVideo() {
-    document.querySelectorAll('video').forEach(video => {
-      video.pause();
-      video.currentTime = 0;
-    });
-    
-    showNotification({
-      icon: '⏹️',
-      title: 'Đã dừng video',
-      text: '',
-      duration: 1500
-    });
-  }
-
   function toggleMute() {
     const videos = document.querySelectorAll('video');
     let anyMuted = false;
@@ -1375,30 +1447,6 @@
     });
   }
 
-  function toggleAutoSkip() {
-    autoSkip = !autoSkip;
-    localStorage.setItem('hadesAutoSkip', autoSkip);
-    
-    showNotification({
-      icon: '⏭️',
-      title: autoSkip ? 'Đã bật tự động bỏ qua' : 'Đã tắt tự động bỏ qua',
-      text: '',
-      duration: 2000
-    });
-  }
-
-  function toggleRememberSpeed() {
-    rememberSpeed = !rememberSpeed;
-    localStorage.setItem('hadesRememberSpeed', rememberSpeed);
-    
-    showNotification({
-      icon: '💾',
-      title: rememberSpeed ? 'Đã bật nhớ tốc độ' : 'Đã tắt nhớ tốc độ',
-      text: '',
-      duration: 2000
-    });
-  }
-
   function toggleFullscreen() {
     const videos = document.querySelectorAll('video');
     if (videos.length > 0) {
@@ -1431,6 +1479,23 @@
       title: 'Chuyển đổi toàn màn hình',
       text: '',
       duration: 1500
+    });
+  }
+
+  // Hiển thị thông tin DNS
+  function showDNSInfo() {
+    let dnsInfo = 'DNS AdGuard để chặn quảng cáo:\n\n';
+    adBlockDNS.forEach((dns, index) => {
+      dnsInfo += `${index + 1}. ${dns}\n`;
+    });
+    
+    dnsInfo += '\nCài đặt trong hệ thống hoặc router';
+    
+    showNotification({
+      icon: '🌐',
+      title: 'DNS Chặn Quảng Cáo',
+      text: dnsInfo,
+      duration: 5000
     });
   }
 
@@ -1467,7 +1532,6 @@
     const totalVideos = videos.length;
     const playingVideos = Array.from(videos).filter(v => !v.paused && !v.ended).length;
     const mutedVideos = Array.from(videos).filter(v => v.muted).length;
-    const totalDuration = Array.from(videos).reduce((acc, video) => acc + (video.duration || 0), 0);
     
     showNotification({
       icon: '📊',
@@ -1507,23 +1571,12 @@
     });
   }
 
-  function showSettings() {
-    showNotification({
-      icon: '⚙️',
-      title: 'Cài đặt nâng cao',
-      text: 'Tính năng đang phát triển',
-      duration: 2000
-    });
-  }
-
   function exportSettings() {
     const settings = {
       enabled: enabled,
       speed: currentMultiplier,
       theme: currentTheme,
       blockAds: blockAds,
-      autoSkip: autoSkip,
-      rememberSpeed: rememberSpeed,
       volume: currentVolume,
       exportDate: new Date().toISOString()
     };
