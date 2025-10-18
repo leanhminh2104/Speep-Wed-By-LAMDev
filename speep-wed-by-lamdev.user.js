@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Speep Wed By LAMDev
 // @description  Menu quản lý Speep Wed By LAMDev
-// @require      https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v2.4.js
-// @updateURL   https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v2.4.js
-// @downloadURL https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v2.4.js
+// @require      https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v3.js
+// @updateURL   https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v3.js
+// @downloadURL https://raw.githubusercontent.com/leanhminh2104/Speep-Wed-By-LAMDev/refs/heads/main/speep-wed-by-lamdev-v3.js
 // @namespace    http://tampermonkey.net/
 // @version      2.4
 // @author       LAMDev
